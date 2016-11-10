@@ -15,8 +15,8 @@ EbN0 = -1:0.5:12; % power efficiency range
 % ======================================================================= %
 % Other Options
 % ======================================================================= %
-% ...
-
+% modulationtype:
+ mod_type = 1;
 % ======================================================================= %
 % Simulation Chain
 % ======================================================================= %
@@ -32,21 +32,20 @@ for i = 1:length(EbN0) % use parfor ('help parfor') to parallelize
   % ===================================================================== %
   % [SRC] generate N information bits 
   % ... 
-
+    %bits = randsrc(..);
   % [ENC] convolutional encoder
   % ...
 
   % [MOD] symbol mapper
   % ...
-
+    %symbol = bits2sym(bits,mod_type)
   % [CHA] add Gaussian noise
-  % ...
+  % y = awgn(symbols,SNR,'measured')
 
   % scatterplot: plot(y, 'b.')  
 
   % [HR] Hard Receiver
-  % ...
-
+  c_ha = symbol_detect_hard(y,mod_type);
   % [SR] Soft Receiver
   % ...
   % ===================================================================== %
