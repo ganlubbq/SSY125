@@ -10,6 +10,7 @@ AMPM+const = [];
 switch mod_type
     case 1
         %BPSK
+        % i did bpsk!
     case 2
         %QPSK
     case 3
