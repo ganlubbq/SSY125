@@ -5,7 +5,7 @@ function [ symbols ] = bits2sym( bits,mod_type )
 %   'symbols' is a row vector
 BPSK_const = [-1 1];
 QPSK_const = [];
-AMPM+const = [];
+AMPM_const = [];
 
 switch mod_type
     case 1
