@@ -34,7 +34,7 @@ AMPM_const = [...
 switch mod_type
     case 1
     	% the output bit vector length will be equal to symbol vec length in BPSK
-    	c_hat=zeros(1,length(y));
+    	c_hat=zeros(1,length(y))
 
         % Descision of symbols
 		for k = 1:length(y)
@@ -45,8 +45,8 @@ switch mod_type
 
     case 2
         %QPSK
-        % bit vector length will be symbol length multiplied by 2
-        c_hat=zeros(1,(length(y)*2));
+        % bit vector length will be symbol length divided by 2
+        c_hat=zeros(1,(length(y)/2)
 
         for k=1:length(y)
         	x_abs = abs(QPSK_const - y(k));
@@ -56,8 +56,8 @@ switch mod_type
 
     case 3
         %AMPM
-        % bit vector length will be symbol vector length multiplied by 3
-        c_hat=zeros(1,(length(y)*3));
+        % bit vector length will be symbol vector length divided by 3
+        c_hat=zeros(1,(length(y)/3)
 
         for k=1:length(y)
         	x_abs = abs(AMPM_const - y(k));

@@ -3,6 +3,7 @@
 % ======================================================================= %
 clc
 clear
+close all
 
 % ======================================================================= %
 % Simulation Options
@@ -17,6 +18,7 @@ EbN0 = -1:0.5:12; % power efficiency range
 % ======================================================================= %
 % modulationtype:
  mod_type = 1;
+
 % ======================================================================= %
 % Simulation Chain
 % ======================================================================= %
@@ -32,26 +34,27 @@ for i = 1:length(EbN0) % use parfor ('help parfor') to parallelize
   % ===================================================================== %
   % [SRC] generate N information bits 
   % ... 
-    %bits = randsrc(..);
+    u = randsrc(1,N,[0,1]); % Creates random bit pattern
   % [ENC] convolutional encoder
   % ...
 
   % [MOD] symbol mapper
   % ...
     %symbol = bits2sym(bits,mod_type)
+  
   % [CHA] add Gaussian noise
   % y = awgn(symbols,SNR,'measured')
 
   % scatterplot: plot(y, 'b.')  
 
   % [HR] Hard Receiver
-  c_ha = symbol_detect_hard(y,mod_type);
+  u_hat = symbol_detect_hard(y,mod_type);
   % [SR] Soft Receiver
   % ...
   % ===================================================================== %
   % End processing one block of information
   % ===================================================================== %
-  BitErrs = ...; % count the bit errors and evaluate the bit error rate
+  BitErrs = abs(sum(u_hat-u)); % count the bit errors and evaluate the bit error rate
   totErr = totErr + BitErrs;
   num = num + N; 
 
