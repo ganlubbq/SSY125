@@ -2,9 +2,9 @@ function [ c_hat ] = symbol_detect_hard( y,mod_type )
 %SYMBOL_DETECT Summary of this function goes here
 %   Detailed explanation goes here
 %   ML detection, hard receiver
-%   mod_type 1 -> BPSK;
-% 	mod_type 2-> QPSK; 
-%	mod_type 3-> AMPM
+%       mod_type 1 -> BPSK;
+%       mod_type 2-> QPSK; 
+%       mod_type 3-> AMPM
 %   'y' is a row vector
 %   c_hat is row vector of bits
 
