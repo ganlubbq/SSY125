@@ -5,6 +5,7 @@ function [ symbols ] = bits2sym( bits,mod_type )
 %   'symbols' is a row vector
 BPSK_const = [-1 1];
 
+
 QPSK_const = [...
             (+1 + 1i)...% 11 - index 1
             (+1 - 1i)...% 10 - index 2
