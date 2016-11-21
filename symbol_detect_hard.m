@@ -35,22 +35,25 @@ l_y = length(y);
 switch mod_type
     case 1
         y_mat = repmat(y,2,1);
-        const_mat = repmat(BPSK_const',1,l_y);
+        const_mat = repmat(transpose(BPSK_const),1,l_y);
         x_abs_mat = abs(y_mat - const_mat);
         [~,symbol_index_hat] = min(x_abs_mat);
-        bits_hat = transpose(de2bi((symbol_index_hat-1)','left-msb'));
+        bits_hat = de2bi((symbol_index_hat-1)','left-msb');
+        bits_hat = reshape(bits_hat',1,l_y);
     case 2
         y_mat = repmat(y,4,1);
-        const_mat = repmat(QPSK_const',1,l_y);
+        const_mat = repmat(transpose(QPSK_const),1,l_y);
         x_abs_mat = abs(y_mat - const_mat);
         [~,symbol_index_hat] = min(x_abs_mat);
-        bits_hat = transpose(de2bi((symbol_index_hat-1)','left-msb'));
+        bits_hat = de2bi((symbol_index_hat-1)','left-msb');
+        bits_hat = reshape(bits_hat',1,2*l_y);
     case 3
         y_mat = repmat(y,8,1);
-        const_mat = repmat(AMPM_const',1,l_y);
+        const_mat = repmat(transpose(AMPM_const),1,l_y);
         x_abs_mat = abs(y_mat - const_mat);
         [~,symbol_index_hat] = min(x_abs_mat);
-        bits_hat = transpose(de2bi((symbol_index_hat-1)','left-msb'));		
+        bits_hat = de2bi((symbol_index_hat-1)','left-msb');
+        bits_hat = reshape(bits_hat',1,3*l_y);
 	otherwise
 		error('no valid mod_type')
 
