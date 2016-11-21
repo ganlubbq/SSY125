@@ -26,10 +26,15 @@ AMPM_const = [...
 switch mod_type
     case 1
         %BPSK
+        symbols = 2*bits-1;
     case 2
         %QPSK
+        symbols_index = bi2de((buffer(bits,2))','left-msb');
+        symbols = QPSK_const(symbols_index+1);
     case 3
         %AMPM
+        symbols_index = bi2de((buffer(bits,3))','left-msb');
+        symbols = QPSK_const(symbols_index+1);
 end
 end
 
