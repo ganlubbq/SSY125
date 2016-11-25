@@ -10,13 +10,13 @@ close all
 % ======================================================================= %
 N = 3e3;  % simulate N bits each transmission (one block)
 maxNumErrs = 100; % get at least 100 bit errors (more is better)
-maxNum = 1e5; % OR stop if maxNum bits have been simulated
+maxNum = 1e6; % OR stop if maxNum bits have been simulated
 EbN0 = -1:0.5:12; % power efficiency range
 % ======================================================================= %
 % Other Options
 % ======================================================================= %
 % modulationtype:
- mod_type = 3;
+ mod_type = 2;
 
 % ======================================================================= %
 % Simulation Chain
@@ -42,7 +42,7 @@ for i = 1:length(EbN0) % use parfor ('help parfor') to parallelize
     symbol = bits2sym(u,mod_type);
   
   % [CHA] add Gaussian noise
-    EsN0 = EbN0(i)*mod_type;
+    EsN0 = EbN0(i)+10*log10(mod_type);
     y = awgn(symbol,EsN0);
   % scatterplot: plot(y, 'b.')  
 
