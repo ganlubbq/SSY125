@@ -8,9 +8,9 @@ close all
 % ======================================================================= %
 % Simulation Options
 % ======================================================================= %
-N = 3e3;  % simulate N bits each transmission (one block)
+N = 1e3;  % simulate N bits each transmission (one block)
 maxNumErrs = 500; % get at least 100 bit errors (more is better)
-maxNum = 1e6; % OR stop if maxNum bits have been simulated
+maxNum = 1e7; % OR stop if maxNum bits have been simulated
 EbN0 = -1:0.5:12; % power efficiency range
 % ======================================================================= %
 % Other Options
@@ -22,7 +22,8 @@ EbN0 = -1:0.5:12; % power efficiency range
 % Simulation Chain
 % ======================================================================= %
 BER = zeros(1, length(EbN0)); % pre-allocate a vector for BER results
-
+% theoratical BER
+BER_th = qfunc(sqrt(2*10.^(EbN0/10)));
 for i = 1:length(EbN0) % use parfor ('help parfor') to parallelize  
   totErr = 0;  % Number of errors observed
   num = 0; % Number of bits processed
