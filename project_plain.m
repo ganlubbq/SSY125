@@ -9,7 +9,7 @@ close all
 % Simulation Options
 % ======================================================================= %
 N = 3e3;  % simulate N bits each transmission (one block)
-maxNumErrs = 100; % get at least 100 bit errors (more is better)
+maxNumErrs = 500; % get at least 100 bit errors (more is better)
 maxNum = 1e6; % OR stop if maxNum bits have been simulated
 EbN0 = -1:0.5:12; % power efficiency range
 % ======================================================================= %
