@@ -7,4 +7,4 @@ semilogy(EbN0,BER_th)
 xlabel('EBN0 / dB')
 ylabel('BER')
 grid on
-axis([-1 12 1E-16 1])
+axis([-1 12 1E-5 1])

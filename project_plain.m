@@ -10,7 +10,7 @@ close all
 % ======================================================================= %
 N = 1e3;  % simulate N bits each transmission (one block)
 maxNumErrs = 500; % get at least 100 bit errors (more is better)
-maxNum = 1e7; % OR stop if maxNum bits have been simulated
+maxNum = 1e6; % OR stop if maxNum bits have been simulated
 EbN0 = -1:0.5:12; % power efficiency range
 % ======================================================================= %
 % Other Options
@@ -43,8 +43,12 @@ for i = 1:length(EbN0) % use parfor ('help parfor') to parallelize
     symbol = bits2sym(u,mod_type);
   
   % [CHA] add Gaussian noise
-    EsN0 = EbN0(i)+10*log10(mod_type);
-    y = awgn(symbol,EsN0);
+    EsN0 = 10^(EbN0(i)/10)*mod_type;%linear scale
+    N0 = 1/EsN0;%Es = 1
+    sigma = sqrt(N0/2);
+    white_noise = (sigma)*...
+        (randn(1,length(symbol)) + 1j*randn(1,length(symbol)));
+    y = white_noise+symbol;
   % scatterplot: plot(y, 'b.')  
 
   % [HR] Hard Receiver
