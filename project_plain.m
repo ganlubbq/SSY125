@@ -44,8 +44,7 @@ for i = 1:length(EbN0) % use parfor ('help parfor') to parallelize
   
   % [CHA] add Gaussian noise
     EsN0 = 10^(EbN0(i)/10)*mod_type;%linear scale
-    N0 = 1/EsN0;%Es = 1
-    sigma = sqrt(N0/2);
+    sigma = sqrt(1/(EsN0*2*1));%Es = 1
     white_noise = (sigma)*...
         (randn(1,length(symbol)) + 1j*randn(1,length(symbol)));
     y = white_noise+symbol;
@@ -58,13 +57,13 @@ for i = 1:length(EbN0) % use parfor ('help parfor') to parallelize
   % ===================================================================== %
   % End processing one block of information
   % ===================================================================== %
-  BitErrs = abs(sum(u_hat-u)); % count the bit errors and evaluate the bit error rate
+  BitErrs = sum(abs(u_hat-u)); % count the bit errors and evaluate the bit error rate
   totErr = totErr + BitErrs;
   num = num + N; 
 
-  disp(['+++ ' num2str(totErr) '/' num2str(maxNumErrs) ' errors. '...
-      num2str(num) '/' num2str(maxNum) ' bits. Projected error rate = '...
-      num2str(totErr/num, '%10.1e') '. +++']);
+%   disp(['+++ ' num2str(totErr) '/' num2str(maxNumErrs) ' errors. '...
+%       num2str(num) '/' num2str(maxNum) ' bits. Projected error rate = '...
+%       num2str(totErr/num, '%10.1e') '. +++']);
   end 
   BER(i) = totErr/num; 
 end
