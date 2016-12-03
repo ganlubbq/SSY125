@@ -18,4 +18,6 @@ slprj/
 # Session info
 octave-workspace
 
-/img
+
+# img
+img/
