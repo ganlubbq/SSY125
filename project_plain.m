@@ -1,5 +1,8 @@
 % ======================================================================= %
 % SSY125 Project
+% code for part 1
+% encoder: conv_encoder.m
+% decoder: conv_decode.m, distance_metric.m, trace_back.m
 % ======================================================================= %
 clc
 clear
