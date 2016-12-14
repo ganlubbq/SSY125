@@ -17,8 +17,8 @@ EbN0 = -1:0.5:12; % power efficiency range
 % ======================================================================= %
 % modulationtype:
  mod_type = 3;
- code_rate = 2/3;
- E4_trellis;%get trellis for E4
+ code_rate = 1;
+ %E4_trellis;%get trellis for E4
 % ======================================================================= %
 % Simulation Chain
 % ======================================================================= %
@@ -36,10 +36,10 @@ for i = 1:length(EbN0) % use parfor ('help parfor') to parallelize
     u = randsrc(1,N,[0,1]); % Creates random bit pattern
   % [ENC] convolutional encoder
   % ...
-    coded = convenc(u,trellis);
+  %  coded = convenc(u,trellis);
   % [MOD] symbol mapper
   % ...
-    symbol = bits2sym(coded,mod_type);
+    symbol = bits2sym(u,mod_type);
   
   % [CHA] add Gaussian noise
     EsN0 = 10^(EbN0(i)/10)*mod_type*code_rate;%linear scale
@@ -50,14 +50,14 @@ for i = 1:length(EbN0) % use parfor ('help parfor') to parallelize
   % scatterplot: plot(y, 'b.')  
 
   % [HR] Hard Receiver
-  %u_hat_hard = symbol_detect_hard(y,mod_type);
+  u_hat_hard = symbol_detect_hard(y,mod_type);
   % [SR] Soft Receiver
-    y_llr = ampm_llr(y,sigma);
-    u_hat_soft = vitdec(y_llr,trellis,8,'trunc','unquant');
+  %  y_llr = ampm_llr(y,sigma);
+  %  u_hat_soft = vitdec(y_llr,trellis,8,'trunc','unquant');
   % ===================================================================== %
   % End processing one block of information
   % ===================================================================== %
-  BitErrs = sum(abs(u_hat_soft-u)); % count the bit errors and evaluate the bit error rate
+  BitErrs = sum(bitxor(u_hat_hard,u)); % count the bit errors and evaluate the bit error rate
   totErr = totErr + BitErrs;
   num = num + N; 
 
