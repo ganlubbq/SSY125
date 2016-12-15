@@ -39,7 +39,7 @@ for t=1:t_max
         D(8) D(4) D(6) D(2)];
 end
 %start from the last column with known final state
-pos_r = final_state;
+pos_r = final_state+1;
 for t = t_max:-1:1
     [info_dec(t),pos_r] = trace_back(pos_r,t,I,map);
 end
