@@ -1,5 +1,5 @@
 % ======================================================================= %
-% SSY125 Project AMPM modulation
+% SSY125 Project BSPK modulation
 % ======================================================================= %
 clc
 clear
@@ -8,17 +8,18 @@ close all
 % ======================================================================= %
 % Simulation Options
 % ======================================================================= %
-N = 9e4;  % simulate N bits each transmission (one block)
+N = 1E5;  % simulate N bits each transmission (one block)
 maxNumErrs = 500; % get at least 100 bit errors (more is better)
-maxNum = 9e6; % OR stop if maxNum bits have been simulated
+maxNum = 1E7; % OR stop if maxNum bits have been simulated
 EbN0 = -1:0.5:12; % power efficiency range
 % ======================================================================= %
 % Other Options
 % ======================================================================= %
 % modulationtype:
- mod_type = 3;
- code_rate = 2/3;
- E4_trellis;%get trellis for E4
+ mod_type = 1;
+ code_rate = 0.5;
+ E3_trellis = poly2trellis(5,{'1+x^3+x^4','1+x+x^2+x^3+x^4'});
+ tbl = 5*5;
 % ======================================================================= %
 % Simulation Chain
 % ======================================================================= %
@@ -36,7 +37,7 @@ for i = 1:length(EbN0) % use parfor ('help parfor') to parallelize
     u = randsrc(1,N,[0,1]); % Creates random bit pattern
   % [ENC] convolutional encoder
   % ...
-    coded = convenc(u,trellis);
+    coded = convenc(u,E3_trellis);
   % [MOD] symbol mapper
   % ...
     symbol = bits2sym(coded,mod_type);
@@ -52,8 +53,8 @@ for i = 1:length(EbN0) % use parfor ('help parfor') to parallelize
   % [HR] Hard Receiver
   %u_hat_hard = symbol_detect_hard(y,mod_type);
   % [SR] Soft Receiver
-    y_llr = ampm_llr(y,sigma);
-    u_hat_soft = vitdec(y_llr,trellis,8,'trunc','unquant');
+    y_llr = bpsk_llr(y,sigma);
+    u_hat_soft = vitdec(y_llr,E3_trellis,tbl,'trunc','unquant');
   % ===================================================================== %
   % End processing one block of information
   % ===================================================================== %
