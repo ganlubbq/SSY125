@@ -28,7 +28,9 @@ BER = zeros(1, length(EbN0)); % pre-allocate a vector for BER results
 for i = 1:length(EbN0) % use parfor ('help parfor') to parallelize  
   totErr = 0;  % Number of errors observed
   num = 0; % Number of bits processed
-
+  EsN0 = 10^(EbN0(i)/10)*mod_type*code_rate;%linear scale
+  sigma = sqrt(1/(EsN0*2*1));%Es = 1
+  fprintf('progress:%d/%d\n',i,length(EbN0))
   while((totErr < maxNumErrs) && (num < maxNum))
   % ===================================================================== %
   % Begin processing one block of information
