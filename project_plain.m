@@ -8,10 +8,11 @@ close all
 % ======================================================================= %
 % Simulation Options
 % ======================================================================= %
-N = 9e4;  % simulate N bits each transmission (one block)
+N = 1e5;  % simulate N bits each transmission (one block)
 maxNumErrs = 500; % get at least 100 bit errors (more is better)
-maxNum = 9e5; % OR stop if maxNum bits have been simulated
+maxNum = 1e7; % OR stop if maxNum bits have been simulated
 EbN0 = -1:0.5:12; % power efficiency range
+load('AMPM_const.mat')
 % ======================================================================= %
 % Other Options
 % ======================================================================= %
@@ -19,8 +20,6 @@ EbN0 = -1:0.5:12; % power efficiency range
  mod_type = 3;
  code_rate = 2/3;
  E4_trellis;%get trellis for E4
- nsec = 13;
- codebook = 0:2^nsec-1;
 % ======================================================================= %
 % Simulation Chain
 % ======================================================================= %
@@ -40,27 +39,17 @@ for i = 1:length(EbN0) % use parfor ('help parfor') to parallelize
     u = randsrc(1,N,[0,1]); % Creates random bit pattern
   % [ENC] convolutional encoder
   % ...
-    coded = convenc(u,trellis);
+    [coded,final_state] = convenc(u,trellis);
   % [MOD] symbol mapper
   % ...
     symbol = bits2sym(coded,mod_type);
   
   % [CHA] add Gaussian noise
-    EsN0 = 10^(EbN0(i)/10)*mod_type*code_rate;%linear scale
-    sigma = sqrt(1/(EsN0*2*1));%Es = 1
     white_noise = (sigma)*...
         (randn(1,length(symbol)) + 1j*randn(1,length(symbol)));
     y = white_noise+symbol;
-  % scatterplot: plot(y, 'b.')  
-
-  % [HR] Hard Receiver
-  %u_hat_hard = symbol_detect_hard(y,mod_type);
   % [SR] Soft Receiver
-    y_llr = ampm_llr(y,sigma);
-  % quantize y_llr;
-    partition = linspace(min(y_llr),max(y_llr),2^nsec-2);
-    y_llr_quantized = quantiz(-y_llr,partition,codebook);
-    u_hat_soft = vitdec(y_llr_quantized,trellis,8,'trunc','soft',nsec);
+    u_hat_soft = conv_decode(y,AMPM_const,final_state);
   % ===================================================================== %
   % End processing one block of information
   % ===================================================================== %
