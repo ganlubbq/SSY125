@@ -51,6 +51,8 @@ for i = 1:length(EbN0) % use parfor ('help parfor') to parallelize
 
   % [HR] Hard Receiver
   u_hat_hard = symbol_detect_hard(y,mod_type);
+  u_llr = ampm_llr(y,sigma);
+  fprintf('LLR max: %2.f min %.2f\n',max(u_llr),min(u_llr));
   % [SR] Soft Receiver
   %  y_llr = ampm_llr(y,sigma);
   %  u_hat_soft = vitdec(y_llr,trellis,8,'trunc','unquant');
