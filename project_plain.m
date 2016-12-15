@@ -10,7 +10,7 @@ close all
 % ======================================================================= %
 N = 9e4;  % simulate N bits each transmission (one block)
 maxNumErrs = 500; % get at least 100 bit errors (more is better)
-maxNum = 9e6; % OR stop if maxNum bits have been simulated
+maxNum = 9e5; % OR stop if maxNum bits have been simulated
 EbN0 = -1:0.5:12; % power efficiency range
 % ======================================================================= %
 % Other Options
@@ -19,6 +19,8 @@ EbN0 = -1:0.5:12; % power efficiency range
  mod_type = 3;
  code_rate = 2/3;
  E4_trellis;%get trellis for E4
+ nsec = 13;
+ codebook = 0:2^nsec-1;
 % ======================================================================= %
 % Simulation Chain
 % ======================================================================= %
@@ -53,7 +55,10 @@ for i = 1:length(EbN0) % use parfor ('help parfor') to parallelize
   %u_hat_hard = symbol_detect_hard(y,mod_type);
   % [SR] Soft Receiver
     y_llr = ampm_llr(y,sigma);
-    u_hat_soft = vitdec(y_llr,trellis,8,'trunc','unquant');
+  % quantize y_llr;
+    partition = linspace(min(y_llr),max(y_llr),2^nsec-2);
+    y_llr_quantized = quantiz(-y_llr,partition,codebook);
+    u_hat_soft = vitdec(y_llr_quantized,trellis,8,'trunc','soft',nsec);
   % ===================================================================== %
   % End processing one block of information
   % ===================================================================== %
