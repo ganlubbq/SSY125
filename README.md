@@ -26,3 +26,5 @@ Week 6
 
 Week 7
 	- Report writing
+
+Final report: https://drive.google.com/file/d/0BwLsAQp-mZwJTFVGOVJaVU1GdEU/view?usp=sharing
